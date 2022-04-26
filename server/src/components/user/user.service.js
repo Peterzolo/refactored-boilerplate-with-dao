@@ -65,17 +65,17 @@ exports.login = async (email, password) => {
 
     if (user.status === "inactive") {
       logger.warn("user account not activated");
-      throw userError.Inactive();
+      return userError.Inactive();
     }
 
     if (user.verified === false) {
-      throw userError.UnverifiedUser();
+      return userError.UnverifiedUser();
     }
 
     const isValidPassword = await bcrypt.compareSync(password, user.password);
     if (!isValidPassword) {
       logger.warn("Authentication failed. Wrong credential.");
-      throw userError.WrongCredential();
+      return userError.WrongCredential();
     }
 
     let token = jwtHelpers.encode({

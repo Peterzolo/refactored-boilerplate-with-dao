@@ -17,6 +17,7 @@ const {
   generateOTP,
   createRandomBytes,
 } = require("../../library/helpers/utils/utility");
+const User = require("./user.model");
 exports.register = async (req, res) => {
   const body = req.body;
   try {
@@ -175,7 +176,7 @@ exports.forgotPassword = async (req, res) => {
     const sendMail = async (msg) => {
       try {
         await sgMail.send(msg);
-        console.log("Email verification successful");
+        console.log("Password Reset Link Sent");
       } catch (error) {
         console.error(error);
       }
@@ -183,8 +184,8 @@ exports.forgotPassword = async (req, res) => {
     sendMail({
       to: user.email,
       from: "petsolstudio@gmail.com",
-      subject: "Welcome- you have been verified",
-      text: "Email verified successfully",
+      subject: "Password verification Link",
+      text: "This mail has been sent following your request to reset your password. If you di not initiate this, kindly contact us",
       html: `
                     <h1>Please use the following link to reset your password</h1>
                     <p> <a href ="#">${process.env.CLIENT_URL}/reset-password?token=${randomBytes}&id=${user._id}</a></p>
@@ -196,13 +197,59 @@ exports.forgotPassword = async (req, res) => {
 
     res.status(200).send({
       success: true,
-      message: " email successfully verified",
-      user: {
-        email: user.email,
-        id: user._id,
-      },
+      message: "Password reset link has been sent to your email",
     });
   } catch (error) {
     res.status(500).json(error);
+  }
+};
+
+exports.resetPassword = async (req, res) => {
+  const { password } = req.body;
+  try {
+    const user = await User.findById(req.userId._id);
+    if (!user) {
+      throw userError.UserNotFound();
+    }
+
+    const findResetToken = await userDao.findPasswordResetToken({
+      owner: user._id,
+    });
+    console.log("FIND RESET TOKEN", findResetToken);
+
+    user.password = password.trim();
+    await user.save();
+
+    await userDao.deletePasswordResetToken(findResetToken._id);
+
+    const sendMail = async (msg) => {
+      try {
+        await sgMail.send(msg);
+        console.log("Password reset successful");
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    sendMail({
+      to: user.email,
+      from: "petsolstudio@gmail.com",
+      subject: "Password verification Link",
+      text: "This mail has been sent following your request to reset your password. If you di not initiate this, kindly contact us",
+      html: `
+                  <h1>Password Rest Success</h1>
+                  <p> <a href ="#">You have successfully reset your password. Now you can login with your new password</a></p>
+                 
+              `,
+    });
+
+    return res.status(200).send(
+      sendResponse({
+        message: "Password reset successful",
+        content: "",
+        success: true,
+      })
+    );
+  } catch (error) {
+    res.status(400).json(error);
   }
 };

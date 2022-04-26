@@ -17,6 +17,12 @@ exports.deleteVerifyToken = async (id) => {
   return token;
 };
 
+exports.deletePasswordResetToken = async (id) => {
+  const token = await PasswordResetToken.findByIdAndDelete({ _id: id });
+  return token;
+};
+
+
 exports.findUserByEmail = async (email) => {
   const user = await User.findOne(email);
   return user;
@@ -36,7 +42,7 @@ exports.saveUserVerificationTokenPayload = async (args) => {
   return payload;
 };
 
-exports.savePasswordResetPayload = async (args) =>{
-  const payload = await PasswordResetToken.create(args)
-  return payload
-}
+exports.savePasswordResetPayload = async (args) => {
+  const payload = await PasswordResetToken.create(args);
+  return payload;
+};

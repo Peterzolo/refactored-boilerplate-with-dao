@@ -10,9 +10,8 @@ const userController = require("./user.controller");
 
 const { catchErrors } = require("../../library/helpers/errorFormatHelpers");
 const { getAuthorize } = require("../../library/middlewares/authMiddleware");
-const {
-  isResetTokenValid,
-} = require("../../library/middlewares/resetPasswordMiddleware");
+const { isResetTokenValid } = require("../../library/middlewares/resetpassword");
+
 
 router.post(
   "/register",
@@ -29,6 +28,12 @@ router.post(
   "/forgot-password",
   validateSignUp(),
   catchErrors(userController.forgotPassword)
+);
+router.post(
+  "/reset-password",
+  isResetTokenValid,
+  validateSignUp(),
+  catchErrors(userController.resetPassword)
 );
 
 module.exports = router;

@@ -51,6 +51,13 @@ module.exports = {
     message = "Action failed",
     name = null,
     innerException = null
+  ) =>new AppError(name, UNAUTHORIZED, message, content, innerException),
+
+  PasswordResetMessage: (
+    content = {},
+    message = "Your new password must be different from the old",
+    name = null,
+    innerException = null
   ) =>
     new AppError(name, UNPROCESSABLE_ENTITY, message, content, innerException),
 
