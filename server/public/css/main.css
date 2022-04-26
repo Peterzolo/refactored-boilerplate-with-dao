@@ -1,0 +1,170 @@
+* {
+  padding: 0%;
+  margin: 0%;
+}
+
+body {
+  /* background-color: grey; */
+  background-image: url("/public/images/laura-adai-9SU9dNEs5wE-unsplash.jpg");
+}
+
+.hero {
+  height: auto;
+  width: 80%;
+  margin: 0px auto;
+  margin-top: 100px;
+  border-radius: 10px;
+  background-color: rgb(240, 240, 240);
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.main-header {
+  text-align: center;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background-color: #006d75;
+  height: 100px;
+}
+
+.main-header .title {
+  padding-top: 10px;
+  color: darkgray;
+}
+
+.container-one {
+  background-color: #b5f5ec;
+  width: auto;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  justify-items: center;
+}
+.app-name-container {
+}
+
+.name-title {
+  font-size: 20px;
+  color: #434343;
+  padding: 5px;
+  text-align: center;
+  font-weight: bold;
+}
+.name {
+  font-size: 16px;
+  margin-top: 10px;
+  color: #595959;
+  text-align: center;
+}
+.desc-title {
+  font-size: 20px;
+  color: #434343;
+  padding: 5px;
+  text-align: center;
+  font-weight: bold;
+}
+.desc {
+  font-size: 16px;
+  margin-top: 10px;
+  color: #595959;
+  text-align: center;
+}
+.feature-title {
+  font-size: 20px;
+  color: #434343;
+  padding: 5px;
+  text-align: center;
+  font-weight: bold;
+}
+.feature {
+  font-size: 16px;
+  margin-top: 10px;
+  color: #595959;
+  text-align: center;
+}
+.tech-title {
+  font-size: 20px;
+  color: #434343;
+  padding: 5px;
+  text-align: center;
+  font-weight: bold;
+}
+.tech {
+  font-size: 16px;
+  margin-top: 10px;
+  color: #595959;
+  text-align: center;
+}
+
+.endpoint-container {
+  text-align: center;
+
+  background-color: #f5f5f5;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.endpoint-title {
+  letter-spacing: 10px;
+  font-weight: bold;
+  color: #434343;
+}
+
+.endpoint-sub-container {
+  display: flex;
+  justify-content: space-around;
+  /* align-items: center; */
+}
+
+.user-title {
+  color: #434343;
+  padding-top: 10px;
+}
+
+.endpoint-user {
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  padding: 10px;
+}
+.endpoint-product {
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  padding: 10px;
+}
+.endpoint-category {
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  padding: 10px;
+}
+.endpoint-order {
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  padding: 10px;
+}
+.endpoint-cart {
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  padding: 10px;
+}
+
+.link-user {
+  padding: 10px;
+}
+
+.link {
+  color: #8c8c8c;
+  padding-top: 3px;
+}
+
+.full-documentation {
+  text-decoration: none;
+  background-color: #00474f;
+  width: 300px;
+  margin: 0 auto;
+  padding: 10px;
+  border-radius: 10px;
+  color: #faad14;
+}
+.full-documentation a {
+  text-decoration: none;
+  font-weight: bold;
+  color: rgb(226, 223, 216);
+  padding: 10px;
+  font-size: 20px;
+  font-style: italic;
+}
