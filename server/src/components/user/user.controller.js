@@ -145,3 +145,64 @@ exports.userLogin = async (req, res) => {
     })
   );
 };
+
+exports.forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  try {
+    if (!email) {
+      throw userError.InvalidInput();
+    }
+
+    const user = await userDao.findUserByEmail({ email });
+    if (!user) {
+      throw userError.UserNotFound();
+    }
+
+    const token = await userDao.findPasswordResetToken({ owner: user._id });
+    if (token) {
+      throw userError.TokenMessage();
+    }
+
+    const randomBytes = await createRandomBytes();
+
+    const passwordResetObject = {
+      owner: user._id,
+      token: randomBytes,
+    };
+
+    await userDao.savePasswordResetPayload(passwordResetObject);
+
+    const sendMail = async (msg) => {
+      try {
+        await sgMail.send(msg);
+        console.log("Email verification successful");
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    sendMail({
+      to: user.email,
+      from: "petsolstudio@gmail.com",
+      subject: "Welcome- you have been verified",
+      text: "Email verified successfully",
+      html: `
+                    <h1>Please use the following link to reset your password</h1>
+                    <p> <a href ="#">${process.env.CLIENT_URL}/reset-password?token=${randomBytes}&id=${user._id}</a></p>
+                    <hr />
+                    <p>This email may contain sensetive information</p>
+                    <p>${process.env.CLIENT_URL}</p>
+                `,
+    });
+
+    res.status(200).send({
+      success: true,
+      message: " email successfully verified",
+      user: {
+        email: user.email,
+        id: user._id,
+      },
+    });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};

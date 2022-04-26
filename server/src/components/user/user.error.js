@@ -39,6 +39,12 @@ module.exports = {
     name = null,
     innerException = null
   ) => new AppError(name, UNAUTHORIZED, message, content, innerException),
+  TokenMessage: (
+    content = {},
+    message = "You can only request for another token after 60 minutes",
+    name = null,
+    innerException = null
+  ) => new AppError(name, UNAUTHORIZED, message, content, innerException),
 
   ActionFailed: (
     content = {},

@@ -25,5 +25,10 @@ router.post(
   catchErrors(userController.verifyEmail)
 );
 router.post("/login", validateSignUp(), catchErrors(userController.userLogin));
+router.post(
+  "/forgot-password",
+  validateSignUp(),
+  catchErrors(userController.forgotPassword)
+);
 
 module.exports = router;
