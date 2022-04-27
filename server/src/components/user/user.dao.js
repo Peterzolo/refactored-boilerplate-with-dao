@@ -1,5 +1,5 @@
 const User = require("./user.model");
-const PasswordResetToken = require("./user.resetPassword.model");
+const PasswordResetToken = require("./user.passwordReset.model.js");
 const VerifyToken = require("./VerificationToken");
 
 exports.findVerifyToken = async (id) => {

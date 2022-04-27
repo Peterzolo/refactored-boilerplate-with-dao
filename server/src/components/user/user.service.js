@@ -27,7 +27,6 @@ exports.createUser = async ({ email, password, isAdmin }) => {
       password,
       isAdmin,
     };
-
     const savedUser = await userDao.saveUserPayload(userObject);
     const OTP = generateOTP();
 
@@ -35,7 +34,6 @@ exports.createUser = async ({ email, password, isAdmin }) => {
       owner: savedUser._id,
       token: OTP,
     };
-
     const verifiyToken = await userDao.saveUserVerificationTokenPayload(
       verifyTokenObject
     );

@@ -106,6 +106,13 @@ module.exports = {
     innerException = null
   ) =>
     new AppError(name, UNPROCESSABLE_ENTITY, message, content, innerException),
+  PasswordResetMessage: (
+    content = {},
+    message = "Sorry, but your old password cannot be used. New password is required",
+    name = null,
+    innerException = null
+  ) =>
+    new AppError(name, UNPROCESSABLE_ENTITY, message, content, innerException),
   UnverifiedUser: (
     content = {},
     message = "This user has not been verified, please verify your account",

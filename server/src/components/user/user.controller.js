@@ -9,7 +9,7 @@ const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const { isValidObjectId } = require("mongoose");
 const VerifyToken = require("./VerificationToken");
-const ResetToken = require("./ResetPassword");
+const ResetToken = require("./user.passwordReset.model.js");
 const { sendResponse } = require("../../library/helpers/responseHelpers");
 const logger = require("../../library/helpers/loggerHelpers");
 const { isEmpty } = require("../../library/helpers/validationHelpers");
@@ -207,18 +207,27 @@ exports.forgotPassword = async (req, res) => {
 exports.resetPassword = async (req, res) => {
   const { password } = req.body;
   try {
-    const user = await User.findById(req.userId._id);
+    const userId = req.userId;
+    const user = await userDao.findUserById(userId);
+    console.log("USER----", user);
     if (!user) {
       throw userError.UserNotFound();
+    }
+
+    const oldPassword = await user.comparePassword(password);
+    console.log("OLD PASSWORD", oldPassword);
+    if (oldPassword) {
+      throw userError.PasswordResetMessage();
     }
 
     const findResetToken = await userDao.findPasswordResetToken({
       owner: user._id,
     });
-    console.log("FIND RESET TOKEN", findResetToken);
 
+  
     user.password = password.trim();
     await user.save();
+
 
     await userDao.deletePasswordResetToken(findResetToken._id);
 
