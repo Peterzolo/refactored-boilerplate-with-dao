@@ -14,6 +14,10 @@ exports.findAdminProfiles = async () => {
   const profiles = await ProfileAdmin.find();
   return profiles;
 };
+exports.fetchSingleAdminprofile = async(id) =>{
+  const singleProfile = await ProfileAdmin.findById(id)
+  return singleProfile
+}
 
 exports.findOneAdminProfile = async ({query}) => {
   const singleAdminProfile = await ProfileAdmin.findOne({query});

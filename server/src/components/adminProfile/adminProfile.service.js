@@ -1,6 +1,7 @@
 const config = require("../../config");
 const adminProfileDao = require("./adminProfile.dao");
 const adminProfileError = require("./adminProfile.error");
+const adminprofileDao = require("./adminProfile.dao");
 const logger = require("../../library/helpers/loggerHelpers");
 const jwtHelpers = require("../../library/helpers/jwtHelpers");
 const { isEmpty } = require("../../library/helpers/validationHelpers");
@@ -44,41 +45,7 @@ exports.createAdminProfile = async ({
   }
 };
 
-// exports.createAdminProfile = async ({
-//   firstName,
-//   lastName,
-//   user,
-//   gender,
-//   contactPhone,
-//   address,
-//   avatar,
-//   status,
-// }) => {
-//   try {
-//     const adminProfileObject = {
-//       firstName,
-//       lastName,
-//       user,
-//       gender,
-//       contactPhone,
-//       address,
-//       avatar,
-//       status,
-//     };
-//     const savedAdminProfile = await adminProfileDao.saveAdminProfilePayload(
-//       adminProfileObject
-//     );
-//     return {
-//       firstName: savedAdminProfile.firstName,
-//       lastName: savedAdminProfile.lastName,
-//       user: savedAdminProfile.user,
-//       gender: savedAdminProfile.gender,
-//       contactPhone: savedAdminProfile.contactPhone,
-//       address: savedAdminProfile.address,
-//       avatar: savedAdminProfile.avatar,
-//       status: savedAdminProfile.status,
-//     };
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
+exports.getSingleProfile = async (id) => {
+  const profile = await adminProfileDao.fetchSingleAdminprofile({ _id: id });
+  return profile;
+};

@@ -63,3 +63,33 @@ exports.fetchAllAdminProfiles = async (req, res) => {
     })
   );
 };
+
+exports.fetchAdminProfile = async () => {
+  try {
+    const { profile } = req.params;
+    const userId = req.userId;
+
+    const findAdminProfile = await adminProfileDao.findAdminProfileById(
+      profile
+    );
+
+    const profileOwner = findAdminProfile.user._id.toString();
+    if (userId === profileOwner) {
+      const query = profile;
+      const user = userId;
+      const fetchedProfile = await adminProfileService.getSingleProfile(
+        query,
+        user
+      );
+      return res.status(200).json(
+        sendResponse({
+          message: "Profile Successfully fetched",
+          content: fetchedProfile,
+          success: true,
+        })
+      );
+    } else {
+      throw adminProfileError.NotAllowed();
+    }
+  } catch (error) {}
+};
