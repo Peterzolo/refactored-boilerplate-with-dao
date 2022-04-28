@@ -1,48 +1,36 @@
-const User = require("./user.model");
-const PasswordResetToken = require("./user.passwordReset.model.js");
-const VerifyToken = require("./VerificationToken");
+const AdminProfile = require("./adminProfile.model");
 
-exports.findVerifyToken = async (id) => {
-  const token = await VerifyToken.findOne(id);
-  return token;
+exports.findAdminProfileById = async (id) => {
+  const profile = await AdminProfile.findById(id);
+  return profile;
 };
 
-exports.findPasswordResetToken = async (id) => {
-  const token = await PasswordResetToken.findOne(id);
-  return token;
-};
-
-exports.deleteVerifyToken = async (id) => {
-  const token = await VerifyToken.findByIdAndDelete({ _id: id });
-  return token;
-};
-
-exports.deletePasswordResetToken = async (id) => {
-  const token = await PasswordResetToken.findByIdAndDelete({ _id: id });
-  return token;
-};
-
-
-exports.findUserByEmail = async (email) => {
-  const user = await User.findOne(email);
-  return user;
-};
-exports.findUserById = async (id) => {
-  const user = await User.findById(id);
+exports.findAdminProfileByEmail = async (id) => {
+  const user = await AdminProfile.findOne(id);
   return user;
 };
 
-exports.saveUserPayload = async (args) => {
+exports.saveAdminProfilePayload = async (args) => {
   const payload = await User.create(args);
   return payload;
 };
 
-exports.saveUserVerificationTokenPayload = async (args) => {
-  const payload = await VerifyToken.create(args);
-  return payload;
+exports.findAdminProfiles = async () => {
+  const profiles = await AdminProfile.find();
+  return profiles;
 };
 
-exports.savePasswordResetPayload = async (args) => {
-  const payload = await PasswordResetToken.create(args);
-  return payload;
+exports.findOneAdminProfile = async (query) => {
+  const singleAdminProfile = await AdminProfile.find(query);
+  return singleAdminProfile;
+};
+
+exports.editAdminProfile = async (args) => {
+  const profile = await AdminProfile.findByIdAndUpdate(args);
+  return profile;
+};
+
+exports.deleteAdminProfile = async (args) => {
+  const profile = await AdminProfile.findByIdAndUpdate(args);
+  return profile;
 };
