@@ -17,5 +17,11 @@ router.post(
   getAuthorize,
   catchErrors(adminProfileController.PostAdminProfile)
 );
+router.get(
+  "/fetch-all",
+  // validateSignUp(),
+  getAuthorize,
+  catchErrors(adminProfileController.fetchAllAdminProfiles)
+);
 
 module.exports = router;

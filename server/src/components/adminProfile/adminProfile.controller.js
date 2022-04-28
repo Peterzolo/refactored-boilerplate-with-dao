@@ -52,3 +52,14 @@ exports.PostAdminProfile = async (req, res) => {
     res.status(400).json(error);
   }
 };
+
+exports.fetchAllAdminProfiles = async (req, res) => {
+  const profiles = await adminProfileDao.findAdminProfiles();
+  return res.status(200).json(
+    sendResponse({
+      message: "Profiles Successfully fetch",
+      content: profiles,
+      success: true,
+    })
+  );
+};
