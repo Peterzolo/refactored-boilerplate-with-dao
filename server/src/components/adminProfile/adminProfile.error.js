@@ -13,16 +13,16 @@ module.exports = {
     innerException = null
   ) =>
     new AppError(name, UNPROCESSABLE_ENTITY, message, content, innerException),
-  UserExist: (
+  ProfileExist: (
     content = {},
-    message = "User already exists",
+    message = "You already have a profile so you cannot create another one",
     name = null,
     innerException = null
   ) =>
     new AppError(name, UNPROCESSABLE_ENTITY, message, content, innerException),
-  UserNotFound: (
+  ProfileNotFound: (
     content = {},
-    message = "Owner not found.",
+    message = "Profile not found.",
     name = null,
     innerException = null
   ) => new AppError(name, NOT_FOUND, message, content, innerException),
@@ -51,7 +51,7 @@ module.exports = {
     message = "Action failed",
     name = null,
     innerException = null
-  ) =>new AppError(name, UNAUTHORIZED, message, content, innerException),
+  ) => new AppError(name, UNAUTHORIZED, message, content, innerException),
 
   PasswordResetMessage: (
     content = {},

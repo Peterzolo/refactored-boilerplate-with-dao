@@ -10,7 +10,7 @@ const AdminProfileSchema = new Schema(
     },
     lastName: {
       type: String,
-      trim: true,
+      required: true,
     },
     user: {
       type: Schema.Types.ObjectId,
@@ -32,20 +32,26 @@ const AdminProfileSchema = new Schema(
       },
       houseNum: {
         type: Number,
-        required: true,
+        // required: true,
       },
       area: {
         type: String,
-        required: true,
+        // required: true,
       },
       state: {
         type: String,
-        required: true,
+        // required: true,
       },
       country: {
         type: String,
-        required: true,
+        // required: true,
       },
+    },
+
+    avatar: {
+      type: String,
+      default:
+        "https://pixabay.com/vectors/blank-profile-picture-mystery-man-973460/",
     },
     status: {
       type: String,
@@ -55,13 +61,9 @@ const AdminProfileSchema = new Schema(
   },
   {
     timestamps: true,
-    toJSON: {
-      virtuals: true,
-    },
-  },
-  { collection: "users" }
+  }
 );
 
-const AdminProfile = mongoose.model("user", AdminProfileSchema);
+const ProfileAdmin = mongoose.model("profileAdmin", AdminProfileSchema);
 
-module.exports = AdminProfile;
+module.exports = ProfileAdmin;
