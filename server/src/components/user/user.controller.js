@@ -224,10 +224,8 @@ exports.resetPassword = async (req, res) => {
       owner: user._id,
     });
 
-  
     user.password = password.trim();
     await user.save();
-
 
     await userDao.deletePasswordResetToken(findResetToken._id);
 
