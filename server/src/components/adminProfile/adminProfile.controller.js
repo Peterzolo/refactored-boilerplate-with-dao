@@ -68,12 +68,19 @@ exports.getAdminProfile = async (req, res) => {
     const { profile } = req.params;
     const userId = req.userId;
 
+    const findAdminProfile = await adminProfileDao.findAdminProfileById(
+      profile
+    );
+
+    const profileOwner = findAdminProfile.user._id.toString();
+    if (profileOwner !== userId) {
+      throw adminProfileError.NotAllowed();
+    }
+
     const fetchedProfile = await adminProfileDao.fetchSingleAdminProfile(
       profile,
       userId
     );
-
-    console.log('FETCH PROFILE',fetchedProfile)
 
     if (!fetchedProfile) {
       throw adminProfileError.ProfileNotFound();
@@ -91,37 +98,42 @@ exports.getAdminProfile = async (req, res) => {
   }
 };
 
-// exports.getAdminProfile = async (req, res) => {
-//   try {
-//     const { profile } = req.params;
-//     const userId = req.userId;
+exports.updateAdminProfile = async (req, res) => {
+  try {
+    const { profile } = req.params;
+    const userId = req.userId;
+    const updateData = req.body;
 
-//     const findAdminProfile = await adminProfileDao.findAdminProfileById(
-//       profile
-//     );
+    const findAdminProfile = await adminProfileDao.findAdminProfileById(
+      profile
+    );
 
-//     const profileOwner = findAdminProfile.user._id.toString();
-//     if (userId === profileOwner) {
-//       const query = profile;
-//       const user = userId;
+    const profileOwner = findAdminProfile.user._id.toString();
+    if (profileOwner !== userId) {
+      throw adminProfileError.NotAllowed();
+    }
 
-//       const fetchedProfile = await adminProfileService.getSingleProfile(
-//         query,
-//         user
-//       );
-//       console.log("FETCHED PROFILES", fetchedProfile);
+    const query = profile;
+    const user = userId;
+    const update = updateData;
 
-//       return res.status(200).json(
-//         sendResponse({
-//           message: "Profile Successfully fetched",
-//           content: fetchedProfile,
-//           success: true,
-//         })
-//       );
-//     } else {
-//       throw adminProfileError.NotAllowed();
-//     }
-//   } catch (error) {
-//     res.status(400).json(error);
-//   }
-// };
+    let editedProfile = await adminProfileDao.editAdminProfile(
+      query,
+      user,
+      update
+    );
+
+    if (!editedProfile) {
+      throw adminProfileError.ProfileNotFound();
+    }
+    return res.status(200).send(
+      sendResponse({
+        message: "profile updated",
+        content: editedProfile,
+        success: true,
+      })
+    );
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};

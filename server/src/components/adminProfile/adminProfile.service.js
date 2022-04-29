@@ -20,7 +20,7 @@ exports.createAdminProfile = async ({
     const findAdminProfile = await adminProfileDao.findAdminProfileByUser({
       user,
     });
-    console.log("FIND ADMIN PROFILE", findAdminProfile);
+
     if (findAdminProfile) {
       return adminProfileError.ProfileExist();
     }
@@ -35,7 +35,6 @@ exports.createAdminProfile = async ({
       address,
     };
     const savedProfileAdminObject =
-      // await adminProfileDao.saveAdminProfilePayload(adminProfileObject);
       await adminProfileDao.savedAdminPayloadAndPopulate(adminProfileObject);
 
     return {
@@ -50,17 +49,5 @@ exports.createAdminProfile = async ({
     };
   } catch (error) {
     return error;
-  }
-};
-
-exports.getSingleProfile = async (id) => {
-  try {
-    const profile = await adminProfileDao.fetchSingleAdminProfile({
-      _id: id,
-    });
-    return profile;
-  } catch (error) {
-    return error;
-  
   }
 };

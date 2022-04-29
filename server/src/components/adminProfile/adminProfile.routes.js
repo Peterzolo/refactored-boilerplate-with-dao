@@ -19,15 +19,18 @@ router.post(
 );
 router.get(
   "/fetch-all",
-  // validateSignUp(),
   getAuthorize,
   catchErrors(adminProfileController.fetchAllAdminProfiles)
 );
 router.get(
   "/fetch-one/:profile",
-  // validateSignUp(),
   getAuthorize,
   catchErrors(adminProfileController.getAdminProfile)
+);
+router.get(
+  "/edit/:profile",
+  getAuthorize,
+  catchErrors(adminProfileController.updateAdminProfile)
 );
 
 module.exports = router;

@@ -58,8 +58,12 @@ exports.findAdminProfileByUser = async (query) => {
   return singleAdminProfile;
 };
 
-exports.editAdminProfile = async (args) => {
-  const profile = await ProfileAdmin.findByIdAndUpdate(args);
+exports.editAdminProfile = async (id, userId,adminProfileObj) => {
+  const profile = await ProfileAdmin.findByIdAndUpdate(
+    { _id: id, user: userId },
+    { $set: adminProfileObj },
+    { new: true }
+  );
   return profile;
 };
 
