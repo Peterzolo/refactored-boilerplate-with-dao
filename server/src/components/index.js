@@ -1,5 +1,6 @@
 const userRoutes = require("./user/user.routes");
 const adminProfileRoutes = require("./adminProfile/adminProfile.routes");
+const productRoutes = require("./products/product.routes")
 
 const componentModule = {
   userModule: {
@@ -7,6 +8,9 @@ const componentModule = {
   },
   adminProfileModule: {
     routes: adminProfileRoutes,
+  },
+  productModule: {
+    routes: productRoutes,
   },
 };
 

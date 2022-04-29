@@ -1,42 +1,37 @@
 const { sendResponse } = require("../../library/helpers/responseHelpers");
 const logger = require("../../library/helpers/loggerHelpers");
-const adminProfileService = require("./product.service");
-const adminProfileDao = require("./product.dao");
-const adminProfileError = require("./product.error");
+const productService = require("./product.service");
+const productDao = require("./product.dao");
+const productError = require("./product.error");
 const userDao = require("../user/user.dao");
 const userError = require("../user/user.error");
 
-exports.PostAdminProfile = async (req, res) => {
+exports.Postproduct = async (req, res) => {
   const body = req.body;
   try {
     const userId = req.userId;
-    const user = req.body.user;
-
-    if (userId !== user) {
-      throw adminProfileError.NotAllowed();
-    }
     const findUser = await userDao.findUserById(userId);
     if (findUser.isAdmin === false) {
-      throw userError.NotAllowed();
+      throw productError.NotAllowed();
     }
 
-    const adminProfileObj = {
-      firstName: body.firstName,
-      lastName: body.lastName,
-      user: body.user,
-      gender: body.gender,
-      contactPhone: body.contactPhone,
-      avatar: body.avatar,
+    const productObj = {
+      name: body.name,
+      decription: body.decription,
+      category: body.category,
+      image: body.image,
+      brand: body.brand,
+      model: body.model,
+      yearManufactured: body.yearManufactured,
+      price: body.price,
       status: body.status,
-      address: body.address,
     };
-    const adminProfile = await adminProfileService.createAdminProfile(
-      adminProfileObj
-    );
+    const product = await productService.createProduct(productObj);
+    console.log(product);
     return res.status(200).json(
       sendResponse({
         message: "Profile Successfully created",
-        content: adminProfile,
+        content: product,
         success: true,
       })
     );
@@ -45,11 +40,11 @@ exports.PostAdminProfile = async (req, res) => {
   }
 };
 
-exports.fetchAllAdminProfiles = async (req, res) => {
+exports.fetchAllProducts = async (req, res) => {
   try {
-    const profiles = await adminProfileDao.findAdminProfiles();
+    const profiles = await productDao.findProducts();
     if (!profiles.length) {
-      throw adminProfileError.ProfileNotFound();
+      throw productError.ProfileNotFound();
     }
     return res.status(200).json(
       sendResponse({
@@ -63,33 +58,20 @@ exports.fetchAllAdminProfiles = async (req, res) => {
   }
 };
 
-exports.getAdminProfile = async (req, res) => {
+exports.getProduct = async (req, res) => {
   try {
-    const { profile } = req.params;
-    const userId = req.userId;
+    const { product } = req.params;
+   
+    const fetchedProduct = await productDao.fetchSingleProduct(product);
 
-    const findAdminProfile = await adminProfileDao.findAdminProfileById(
-      profile
-    );
-
-    const profileOwner = findAdminProfile.user._id.toString();
-    if (profileOwner !== userId) {
-      throw adminProfileError.NotAllowed();
-    }
-
-    const fetchedProfile = await adminProfileDao.fetchSingleAdminProfile(
-      profile,
-      userId
-    );
-
-    if (!fetchedProfile) {
-      throw adminProfileError.ProfileNotFound();
+    if (!fetchedProduct) {
+      throw productError.ProfileNotFound();
     }
 
     return res.status(200).json(
       sendResponse({
         message: "Profile Successfully fetched",
-        content: fetchedProfile,
+        content: fetchedProduct,
         success: true,
       })
     );
@@ -98,37 +80,31 @@ exports.getAdminProfile = async (req, res) => {
   }
 };
 
-exports.updateAdminProfile = async (req, res) => {
+exports.updateProduct = async (req, res) => {
   try {
     const { profile } = req.params;
     const userId = req.userId;
     const updateData = req.body;
 
-    const findAdminProfile = await adminProfileDao.findAdminProfileById(
-      profile
-    );
-
-    if (findAdminProfile.status === "inactive") {
-      throw adminProfileError.ProfileNotFound();
+    const findProduct = await productDao.findProductById(profile);
+    P;
+    if (findProduct.status === "inactive") {
+      throw productError.ProfileNotFound();
     }
 
-    const profileOwner = findAdminProfile.user._id.toString();
+    const profileOwner = findProduct.user._id.toString();
     if (profileOwner !== userId) {
-      throw adminProfileError.NotAllowed();
+      throw productError.NotAllowed();
     }
 
     const query = profile;
     const user = userId;
     const update = updateData;
 
-    let editedProfile = await adminProfileDao.editAdminProfile(
-      query,
-      user,
-      update
-    );
+    let editedProfile = await productDao.editProduct(query, user, update);
 
     if (!editedProfile) {
-      throw adminProfileError.ProfileNotFound();
+      throw productError.ProfileNotFound();
     }
     return res.status(200).send(
       sendResponse({
@@ -142,27 +118,25 @@ exports.updateAdminProfile = async (req, res) => {
   }
 };
 
-exports.removeAdminProfile = async (req, res) => {
+exports.removeProduct = async (req, res) => {
   try {
     const { profile } = req.params;
     const userId = req.userId;
 
-    const findAdminProfile = await adminProfileDao.findAdminProfileById(
-      profile
-    );
+    const findProduct = await productDao.findProductById(profile);
 
-    const profileOwner = findAdminProfile.user._id.toString();
+    const profileOwner = findProduct.user._id.toString();
     if (profileOwner !== userId) {
-      throw adminProfileError.NotAllowed();
+      throw productError.NotAllowed();
     }
 
     const query = profile;
     const user = userId;
 
-    let deletedProfile = await adminProfileDao.deleteAdminProfile(query, user);
+    let deletedProfile = await productDao.deleteProduct(query, user);
 
     if (!deletedProfile) {
-      throw adminProfileError.ProfileNotFound();
+      throw productError.ProfileNotFound();
     }
     return res.status(200).send(
       sendResponse({

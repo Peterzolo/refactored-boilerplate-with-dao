@@ -6,7 +6,7 @@ const helmet = require("helmet");
 const cookieParser = require("cookie-parser");
 const handler = require("./library/helpers/errorHandlers");
 const config = require("./config");
-const { userModule, adminProfileModule } = require("./components");
+const { userModule, adminProfileModule, productModule } = require("./components");
 
 const app = express();
 
@@ -27,6 +27,8 @@ app.set("trust proxy", 1);
 
 app.use(`/api/user`, userModule.routes);
 app.use(`/api/admin-profile`, adminProfileModule.routes);
+app.use(`/api/product`, productModule.routes);
+
 
 handler.handleErrors(app);
 

@@ -13,16 +13,16 @@ module.exports = {
     innerException = null
   ) =>
     new AppError(name, UNPROCESSABLE_ENTITY, message, content, innerException),
-  ProfileExist: (
+  ProductExist: (
     content = {},
-    message = "You already have a profile so you cannot create another one",
+    message = "You have already created product with this name so you cannot create another one",
     name = null,
     innerException = null
   ) =>
     new AppError(name, UNPROCESSABLE_ENTITY, message, content, innerException),
-  ProfileNotFound: (
+  ProductNotFound: (
     content = {},
-    message = "Profile not found.",
+    message = "Product not found.",
     name = null,
     innerException = null
   ) => new AppError(name, NOT_FOUND, message, content, innerException),

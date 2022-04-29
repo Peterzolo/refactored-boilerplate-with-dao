@@ -6,7 +6,7 @@ const {
   validateLogin,
   validateEdit,
 } = require("./product.validator");
-const adminProfileController = require("./adminProfile.controller");
+const productController = require("./product.controller");
 
 const { catchErrors } = require("../../library/helpers/errorFormatHelpers");
 const { getAuthorize } = require("../../library/middlewares/authMiddleware");
@@ -15,27 +15,19 @@ router.post(
   "/create",
   // validateSignUp(),
   getAuthorize,
-  catchErrors(adminProfileController.PostAdminProfile)
+  catchErrors(productController.Postproduct)
 );
-router.get(
-  "/fetch-all",
-  getAuthorize,
-  catchErrors(adminProfileController.fetchAllAdminProfiles)
-);
-router.get(
-  "/fetch-one/:profile",
-  getAuthorize,
-  catchErrors(adminProfileController.getAdminProfile)
-);
+router.get("/fetch-all", catchErrors(productController.fetchAllProducts));
+router.get("/fetch-one/:product", catchErrors(productController.getProduct));
 router.put(
-  "/edit/:profile",
+  "/edit/:product",
   getAuthorize,
-  catchErrors(adminProfileController.updateAdminProfile)
+  catchErrors(productController.updateProduct)
 );
 router.delete(
-  "/remove/:profile",
+  "/remove/:product",
   getAuthorize,
-  catchErrors(adminProfileController.removeAdminProfile)
+  catchErrors(productController.removeProduct)
 );
 
 module.exports = router;

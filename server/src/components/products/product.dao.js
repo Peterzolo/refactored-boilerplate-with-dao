@@ -1,5 +1,5 @@
 const Product = require("./product.model");
-Product
+Product;
 exports.findProductById = async (id) => {
   const profile = await Product.findById({ _id: id });
   return profile;
@@ -8,7 +8,7 @@ exports.findProductById = async (id) => {
 const findAndPopulate = async (
   query = {},
   selectQuery = {},
-  path = "category",
+  path = "",
   pathQuery = "",
   findMode = "one",
   sortQuery = { _id: -1 }
@@ -32,25 +32,22 @@ exports.saveProductPayload = async (args) => {
   return payload;
 };
 
-exports.savedAdminPayloadAndPopulate = async (args) => {
+exports.savedProductPayloadAndPopulate = async (args) => {
   const payload = await this.saveProductPayload(args);
   const populateItem = await findAndPopulate({ _id: payload._id }, null);
   return payload, populateItem;
 };
 
 exports.findProducts = async () => {
-  const profiles = await Product.find({ status: "active" }).populate(
-    "category",
-    
-  );
-  return profiles;
+  const products = await Product.find({ status: "active" }).populate("");
+  return products;
 };
 exports.fetchSingleProduct = async (id) => {
-  const singleProfile = await Product.findOne({
+  const singleProduct = await Product.findOne({
     _id: id,
     status: "active",
-  }).populate("category", );
-  return singleProfile;
+  });
+  return singleProduct;
 };
 
 exports.findProductByUser = async (query) => {

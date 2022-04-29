@@ -2,27 +2,28 @@ const config = require("../../config");
 
 const productDao = require("./product.dao");
 const productError = require("./product.error");
-const productDao = require("./product.dao");
 const logger = require("../../library/helpers/loggerHelpers");
 const jwtHelpers = require("../../library/helpers/jwtHelpers");
 const { isEmpty } = require("../../library/helpers/validationHelpers");
 
-exports.createproduct = async ({
+exports.createProduct = async ({
   name,
   description,
   category,
   image,
   brand,
+  model,
+  yearManufactured,
   price,
   status,
 }) => {
   try {
-    const findproduct = await productDao.findproductByUser({
-      user,
+    const findProduct = await productDao.findProductByUser({
+      name,
     });
 
-    if (findproduct) {
-      return productError.ProfileExist();
+    if (findProduct) {
+      return productError.ProductExist();
     }
     const productData = {
       name,
@@ -30,10 +31,12 @@ exports.createproduct = async ({
       category,
       image,
       brand,
+      model,
+      yearManufactured,
       price,
       status,
     };
-    const productObject = await productDao.savedAdminPayloadAndPopulate(
+    const productObject = await productDao.savedProductPayloadAndPopulate(
       productData
     );
 
@@ -43,6 +46,8 @@ exports.createproduct = async ({
       category: productObject.category,
       image: productObject.image,
       brand: productObject.brand,
+      model: productObject.model,
+      yearManufactured: productObject.yearManufactured,
       price: productObject.price,
       status: productObject.status,
     };

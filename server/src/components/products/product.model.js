@@ -5,10 +5,11 @@ const ProductSchema = new Schema(
     name: {
       type: String,
       required: true,
+      unique: true,
     },
     description: {
       type: String,
-      required: true,
+      default : "Product added"
     },
     category: {
       type: Schema.Types.ObjectId,
@@ -24,8 +25,16 @@ const ProductSchema = new Schema(
       type: String,
       required: true,
     },
+    model:{
+      type : String,
+      required : true
+    },
+    yearManufactured:{
+      type : Number,
+      required : true
+    },
     price: {
-      type: String,
+      type: Number,
       required: true,
     },
     status: {
