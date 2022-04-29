@@ -53,13 +53,10 @@ exports.fetchAllCategories = async (req, res) => {
 exports.getCategory = async (req, res) => {
   try {
     const { category } = req.params;
-
     const fetchedCategory = await categoryDao.fetchSingleCategory(category);
-
     if (!fetchedCategory) {
       throw categoryError.CategoryNotFound();
     }
-
     return res.status(200).json(
       sendResponse({
         message: "category Successfully fetched",
