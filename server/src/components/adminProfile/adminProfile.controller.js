@@ -46,14 +46,21 @@ exports.PostAdminProfile = async (req, res) => {
 };
 
 exports.fetchAllAdminProfiles = async (req, res) => {
-  const profiles = await adminProfileDao.findAdminProfiles();
-  return res.status(200).json(
-    sendResponse({
-      message: "Profiles Successfully fetch",
-      content: profiles,
-      success: true,
-    })
-  );
+  try {
+    const profiles = await adminProfileDao.findAdminProfiles();
+    if (!profiles.length) {
+      throw adminProfileError.ProfileNotFound();
+    }
+    return res.status(200).json(
+      sendResponse({
+        message: "Profiles Successfully fetch",
+        content: profiles,
+        success: true,
+      })
+    );
+  } catch (error) {
+    res.status(400).json(error);
+  }
 };
 
 exports.getAdminProfile = async (req, res) => {
@@ -61,30 +68,60 @@ exports.getAdminProfile = async (req, res) => {
     const { profile } = req.params;
     const userId = req.userId;
 
-    const findAdminProfile = await adminProfileDao.findAdminProfileById(
-      profile
+    const fetchedProfile = await adminProfileDao.fetchSingleAdminProfile(
+      profile,
+      userId
     );
 
-    const profileOwner = findAdminProfile.user._id.toString();
-    if (userId === profileOwner) {
-      const query = profile;
-      const user = userId;
+    console.log('FETCH PROFILE',fetchedProfile)
 
-      const fetchedProfile = await adminProfileService.getSingleProfile(
-        query,
-        user
-      );
-      return res.status(200).json(
-        sendResponse({
-          message: "Profile Successfully fetched",
-          content: fetchedProfile,
-          success: true,
-        })
-      );
-    } else {
-      throw adminProfileError.NotAllowed();
+    if (!fetchedProfile) {
+      throw adminProfileError.ProfileNotFound();
     }
+
+    return res.status(200).json(
+      sendResponse({
+        message: "Profile Successfully fetched",
+        content: fetchedProfile,
+        success: true,
+      })
+    );
   } catch (error) {
     res.status(400).json(error);
   }
 };
+
+// exports.getAdminProfile = async (req, res) => {
+//   try {
+//     const { profile } = req.params;
+//     const userId = req.userId;
+
+//     const findAdminProfile = await adminProfileDao.findAdminProfileById(
+//       profile
+//     );
+
+//     const profileOwner = findAdminProfile.user._id.toString();
+//     if (userId === profileOwner) {
+//       const query = profile;
+//       const user = userId;
+
+//       const fetchedProfile = await adminProfileService.getSingleProfile(
+//         query,
+//         user
+//       );
+//       console.log("FETCHED PROFILES", fetchedProfile);
+
+//       return res.status(200).json(
+//         sendResponse({
+//           message: "Profile Successfully fetched",
+//           content: fetchedProfile,
+//           success: true,
+//         })
+//       );
+//     } else {
+//       throw adminProfileError.NotAllowed();
+//     }
+//   } catch (error) {
+//     res.status(400).json(error);
+//   }
+// };

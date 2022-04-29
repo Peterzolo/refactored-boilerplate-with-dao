@@ -39,14 +39,17 @@ exports.savedAdminPayloadAndPopulate = async (args) => {
 };
 
 exports.findAdminProfiles = async () => {
-  const profiles = await ProfileAdmin.find();
-  return profiles;
-};
-exports.fetchSingleAdminProfile = async (id) => {
-  const singleProfile = await ProfileAdmin.findById(id).populate(
+  const profiles = await ProfileAdmin.find({ status: "active" }).populate(
     "user",
     "-password"
   );
+  return profiles;
+};
+exports.fetchSingleAdminProfile = async (id) => {
+  const singleProfile = await ProfileAdmin.findOne({
+    _id: id,
+    status: "active",
+  }).populate("user", "-password");
   return singleProfile;
 };
 
