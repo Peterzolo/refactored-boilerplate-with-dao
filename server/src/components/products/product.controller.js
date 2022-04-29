@@ -95,7 +95,7 @@ exports.updateProduct = async (req, res) => {
     const findProduct = await productDao.findProductById(product);
 
     if (findProduct.status === "inactive") {
-      throw productError.productNotFound();
+      throw productError.ProductNotFound();
     }
 
     const query = product;
@@ -124,25 +124,33 @@ exports.removeProduct = async (req, res) => {
     const { product } = req.params;
     const userId = req.userId;
 
-    const findProduct = await productDao.findProductById(product);
 
-    const productOwner = findProduct.user._id.toString();
-    if (productOwner !== userId) {
+    const findUser = await userDao.findUserById(userId);
+    const userIsAdmin = findUser.isAdmin === true;
+    if (!userIsAdmin) {
       throw productError.NotAllowed();
     }
+
+    const findProduct = await productDao.findProductById(product);
+
+    if (findProduct.status === "inactive") {
+      throw productError.ProductNotFound();
+    }
+
+    
 
     const query = product;
     const user = userId;
 
-    let deletedproduct = await productDao.deleteProduct(query, user);
+    let deletedProduct = await productDao.deleteProduct(query, user);
 
-    if (!deletedproduct) {
+    if (!deletedProduct) {
       throw productError.productNotFound();
     }
     return res.status(200).send(
       sendResponse({
         message: "product updated",
-        content: deletedproduct,
+        content: deletedProduct,
         success: true,
       })
     );
