@@ -42,8 +42,11 @@ exports.findAdminProfiles = async () => {
   const profiles = await ProfileAdmin.find();
   return profiles;
 };
-exports.fetchSingleAdminprofile = async (id) => {
-  const singleProfile = await ProfileAdmin.findById(id);
+exports.fetchSingleAdminProfile = async (id) => {
+  const singleProfile = await ProfileAdmin.findById(id).populate(
+    "user",
+    "-password"
+  );
   return singleProfile;
 };
 

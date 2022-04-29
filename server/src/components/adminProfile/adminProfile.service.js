@@ -54,6 +54,6 @@ exports.createAdminProfile = async ({
 };
 
 exports.getSingleProfile = async (id) => {
-  const profile = await adminProfileDao.fetchSingleAdminprofile({ _id: id });
+  const profile = await adminProfileDao.fetchSingleAdminProfile({ _id: id });
   return profile;
 };
