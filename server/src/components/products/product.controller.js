@@ -30,7 +30,7 @@ exports.Postproduct = async (req, res) => {
     console.log(product);
     return res.status(200).json(
       sendResponse({
-        message: "Profile Successfully created",
+        message: "product Successfully created",
         content: product,
         success: true,
       })
@@ -42,14 +42,14 @@ exports.Postproduct = async (req, res) => {
 
 exports.fetchAllProducts = async (req, res) => {
   try {
-    const profiles = await productDao.findProducts();
-    if (!profiles.length) {
-      throw productError.ProfileNotFound();
+    const products = await productDao.findProducts();
+    if (!products.length) {
+      throw productError.productNotFound();
     }
     return res.status(200).json(
       sendResponse({
-        message: "Profiles Successfully fetch",
-        content: profiles,
+        message: "products Successfully fetch",
+        content: products,
         success: true,
       })
     );
@@ -61,16 +61,16 @@ exports.fetchAllProducts = async (req, res) => {
 exports.getProduct = async (req, res) => {
   try {
     const { product } = req.params;
-   
+
     const fetchedProduct = await productDao.fetchSingleProduct(product);
 
     if (!fetchedProduct) {
-      throw productError.ProfileNotFound();
+      throw productError.productNotFound();
     }
 
     return res.status(200).json(
       sendResponse({
-        message: "Profile Successfully fetched",
+        message: "product Successfully fetched",
         content: fetchedProduct,
         success: true,
       })
@@ -82,34 +82,35 @@ exports.getProduct = async (req, res) => {
 
 exports.updateProduct = async (req, res) => {
   try {
-    const { profile } = req.params;
+    const { product } = req.params;
     const userId = req.userId;
     const updateData = req.body;
 
-    const findProduct = await productDao.findProductById(profile);
-    P;
-    if (findProduct.status === "inactive") {
-      throw productError.ProfileNotFound();
-    }
-
-    const profileOwner = findProduct.user._id.toString();
-    if (profileOwner !== userId) {
+    const findUser = await userDao.findUserById(userId);
+    const userIsAdmin = findUser.isAdmin === true;
+    if (!userIsAdmin) {
       throw productError.NotAllowed();
     }
 
-    const query = profile;
+    const findProduct = await productDao.findProductById(product);
+
+    if (findProduct.status === "inactive") {
+      throw productError.productNotFound();
+    }
+
+    const query = product;
     const user = userId;
     const update = updateData;
 
-    let editedProfile = await productDao.editProduct(query, user, update);
+    let editedProduct = await productDao.editProduct(query, user, update);
 
-    if (!editedProfile) {
-      throw productError.ProfileNotFound();
+    if (!editedProduct) {
+      throw productError.ProductNotFound();
     }
     return res.status(200).send(
       sendResponse({
-        message: "profile updated",
-        content: editedProfile,
+        message: "product updated",
+        content: editedProduct,
         success: true,
       })
     );
@@ -120,28 +121,28 @@ exports.updateProduct = async (req, res) => {
 
 exports.removeProduct = async (req, res) => {
   try {
-    const { profile } = req.params;
+    const { product } = req.params;
     const userId = req.userId;
 
-    const findProduct = await productDao.findProductById(profile);
+    const findProduct = await productDao.findProductById(product);
 
-    const profileOwner = findProduct.user._id.toString();
-    if (profileOwner !== userId) {
+    const productOwner = findProduct.user._id.toString();
+    if (productOwner !== userId) {
       throw productError.NotAllowed();
     }
 
-    const query = profile;
+    const query = product;
     const user = userId;
 
-    let deletedProfile = await productDao.deleteProduct(query, user);
+    let deletedproduct = await productDao.deleteProduct(query, user);
 
-    if (!deletedProfile) {
-      throw productError.ProfileNotFound();
+    if (!deletedproduct) {
+      throw productError.productNotFound();
     }
     return res.status(200).send(
       sendResponse({
-        message: "profile updated",
-        content: deletedProfile,
+        message: "product updated",
+        content: deletedproduct,
         success: true,
       })
     );

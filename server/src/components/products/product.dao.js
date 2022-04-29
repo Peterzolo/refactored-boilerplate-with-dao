@@ -1,8 +1,8 @@
 const Product = require("./product.model");
 Product;
 exports.findProductById = async (id) => {
-  const profile = await Product.findById({ _id: id });
-  return profile;
+  const product = await Product.findById({ _id: id });
+  return product;
 };
 
 const findAndPopulate = async (
@@ -56,16 +56,16 @@ exports.findProductByUser = async (query) => {
 };
 
 exports.editProduct = async (id, userId, ProductObj) => {
-  const profile = await Product.findByIdAndUpdate(
+  const product = await Product.findByIdAndUpdate(
     { _id: id, user: userId },
     { $set: ProductObj },
     { new: true }
   );
-  return profile;
+  return product;
 };
 
 exports.deleteProduct = async (id, userId) => {
-  const profile = await Product.findByIdAndUpdate(
+  const product = await Product.findByIdAndUpdate(
     {
       _id: id,
       user: userId,
@@ -73,5 +73,5 @@ exports.deleteProduct = async (id, userId) => {
     { $set: { status: "inactive" } },
     { new: true }
   );
-  return profile;
+  return product;
 };
