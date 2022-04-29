@@ -136,9 +136,6 @@ exports.removeProduct = async (req, res) => {
     if (findProduct.status === "inactive") {
       throw productError.ProductNotFound();
     }
-
-    
-
     const query = product;
     const user = userId;
 
