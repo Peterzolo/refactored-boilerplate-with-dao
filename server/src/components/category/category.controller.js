@@ -6,7 +6,7 @@ const categoryError = require("./category.error");
 const userDao = require("../user/user.dao");
 const userError = require("../user/user.error");
 
-exports.PostCategory = async (req, res) => {
+exports.postCategory = async (req, res) => {
   const body = req.body;
   try {
     const userId = req.userId;

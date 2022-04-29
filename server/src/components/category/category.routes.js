@@ -16,7 +16,7 @@ router.post(
   "/create",
   // validateSignUp(),
   getAuthorize,
-  catchErrors(CategoryController.PostCategory)
+  catchErrors(CategoryController.postCategory)
 );
 router.get("/fetch-all", catchErrors(CategoryController.fetchAllCategories));
 router.get("/fetch-one/:category", catchErrors(CategoryController.getCategory));

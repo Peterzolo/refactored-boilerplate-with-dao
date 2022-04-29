@@ -15,7 +15,7 @@ module.exports = {
     new AppError(name, UNPROCESSABLE_ENTITY, message, content, innerException),
   CategoryExist: (
     content = {},
-    message = "You have already created category with this name so you cannot create another one",
+    message = "You have already created product with this name so you cannot create another one",
     name = null,
     innerException = null
   ) =>
@@ -26,4 +26,19 @@ module.exports = {
     name = null,
     innerException = null
   ) => new AppError(name, NOT_FOUND, message, content, innerException),
+
+  NotAllowed: (
+    content = {},
+    message = "You are not allowed to perform this task",
+    name = null,
+    innerException = null
+  ) =>
+    new AppError(name, UNPROCESSABLE_ENTITY, message, content, innerException),
+  Inactive: (
+    content = {},
+    message = "Sorry this Owner is inactive",
+    name = null,
+    innerException = null
+  ) =>
+    new AppError(name, UNPROCESSABLE_ENTITY, message, content, innerException),
 };
