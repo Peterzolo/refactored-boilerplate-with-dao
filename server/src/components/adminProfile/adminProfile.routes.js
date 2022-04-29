@@ -23,5 +23,11 @@ router.get(
   getAuthorize,
   catchErrors(adminProfileController.fetchAllAdminProfiles)
 );
+router.get(
+  "/fetch-one/:profile",
+  // validateSignUp(),
+  getAuthorize,
+  catchErrors(adminProfileController.getAdminProfile)
+);
 
 module.exports = router;

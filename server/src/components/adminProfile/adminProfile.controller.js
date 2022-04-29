@@ -15,19 +15,11 @@ exports.PostAdminProfile = async (req, res) => {
     if (userId !== user) {
       throw adminProfileError.NotAllowed();
     }
-
     const findUser = await userDao.findUserById(userId);
     if (findUser.isAdmin === false) {
       throw userError.NotAllowed();
     }
 
-    const findAdminProfile = await adminProfileDao.findOneAdminProfile({
-      user: userId,
-    });
-
-    if (findAdminProfile) {
-      throw adminProfileError.ProfileExist();
-    }
     const adminProfileObj = {
       firstName: body.firstName,
       lastName: body.lastName,
@@ -64,7 +56,7 @@ exports.fetchAllAdminProfiles = async (req, res) => {
   );
 };
 
-exports.fetchAdminProfile = async () => {
+exports.getAdminProfile = async (req, res) => {
   try {
     const { profile } = req.params;
     const userId = req.userId;
@@ -77,6 +69,7 @@ exports.fetchAdminProfile = async () => {
     if (userId === profileOwner) {
       const query = profile;
       const user = userId;
+
       const fetchedProfile = await adminProfileService.getSingleProfile(
         query,
         user
@@ -91,5 +84,7 @@ exports.fetchAdminProfile = async () => {
     } else {
       throw adminProfileError.NotAllowed();
     }
-  } catch (error) {}
+  } catch (error) {
+    res.status(400).json(error);
+  }
 };
