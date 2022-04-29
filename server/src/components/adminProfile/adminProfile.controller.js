@@ -108,6 +108,10 @@ exports.updateAdminProfile = async (req, res) => {
       profile
     );
 
+    if (findAdminProfile.status === "inactive") {
+      throw adminProfileError.ProfileNotFound();
+    }
+
     const profileOwner = findAdminProfile.user._id.toString();
     if (profileOwner !== userId) {
       throw adminProfileError.NotAllowed();
@@ -130,6 +134,40 @@ exports.updateAdminProfile = async (req, res) => {
       sendResponse({
         message: "profile updated",
         content: editedProfile,
+        success: true,
+      })
+    );
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
+
+exports.removeAdminProfile = async (req, res) => {
+  try {
+    const { profile } = req.params;
+    const userId = req.userId;
+
+    const findAdminProfile = await adminProfileDao.findAdminProfileById(
+      profile
+    );
+
+    const profileOwner = findAdminProfile.user._id.toString();
+    if (profileOwner !== userId) {
+      throw adminProfileError.NotAllowed();
+    }
+
+    const query = profile;
+    const user = userId;
+
+    let deletedProfile = await adminProfileDao.deleteAdminProfile(query, user);
+
+    if (!deletedProfile) {
+      throw adminProfileError.ProfileNotFound();
+    }
+    return res.status(200).send(
+      sendResponse({
+        message: "profile updated",
+        content: deletedProfile,
         success: true,
       })
     );

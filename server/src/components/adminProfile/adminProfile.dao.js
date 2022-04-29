@@ -58,7 +58,7 @@ exports.findAdminProfileByUser = async (query) => {
   return singleAdminProfile;
 };
 
-exports.editAdminProfile = async (id, userId,adminProfileObj) => {
+exports.editAdminProfile = async (id, userId, adminProfileObj) => {
   const profile = await ProfileAdmin.findByIdAndUpdate(
     { _id: id, user: userId },
     { $set: adminProfileObj },
@@ -67,7 +67,14 @@ exports.editAdminProfile = async (id, userId,adminProfileObj) => {
   return profile;
 };
 
-exports.deleteAdminProfile = async (args) => {
-  const profile = await ProfileAdmin.findByIdAndUpdate(args);
+exports.deleteAdminProfile = async (id, userId) => {
+  const profile = await ProfileAdmin.findByIdAndUpdate(
+    {
+      _id: id,
+      user: userId,
+    },
+    { $set: { status: "inactive" } },
+    { new: true }
+  );
   return profile;
 };

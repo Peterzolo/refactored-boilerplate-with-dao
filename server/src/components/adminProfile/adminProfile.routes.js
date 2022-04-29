@@ -27,10 +27,15 @@ router.get(
   getAuthorize,
   catchErrors(adminProfileController.getAdminProfile)
 );
-router.get(
+router.put(
   "/edit/:profile",
   getAuthorize,
   catchErrors(adminProfileController.updateAdminProfile)
+);
+router.delete(
+  "/remove/:profile",
+  getAuthorize,
+  catchErrors(adminProfileController.removeAdminProfile)
 );
 
 module.exports = router;
