@@ -30,5 +30,10 @@ router.delete(
   getAuthorize,
   catchErrors(CategoryController.removeCategory)
 );
+router.post(
+  "/search",
+  catchErrors(CategoryController.categorySearch)
+);
+
 
 module.exports = router;

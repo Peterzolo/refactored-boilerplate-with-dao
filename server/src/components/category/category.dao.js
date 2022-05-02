@@ -74,3 +74,8 @@ exports.deleteCategory = async (id, userId) => {
   );
   return category;
 };
+
+exports.searchCategory = async (query) => {
+  const category = await Category.find(query);
+  return category;
+};

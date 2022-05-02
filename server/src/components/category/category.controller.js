@@ -144,3 +144,25 @@ exports.removeCategory = async (req, res) => {
     res.status(400).json(error);
   }
 };
+
+exports.categorySearch = async (req, res) => {
+  const body = req.body;
+  try {
+    const searchedItem = await categoryDao.searchCategory({
+      name: { $regex: `${body.name.trim()}`, $options: "i" },
+    });
+    if (!searchedItem) {
+      res.status(404).json({ error: "Could not find category" });
+    } else {
+      res
+        .status(200)
+        .json({
+          success: true,
+          content: searchedItem,
+          message: "here is the result of your search",
+        });
+    }
+  } catch (error) {
+    res.status(500).json({ Error: error });
+  }
+};
