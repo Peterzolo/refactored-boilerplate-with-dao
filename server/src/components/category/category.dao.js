@@ -79,3 +79,8 @@ exports.searchCategory = async (query) => {
   const category = await Category.find(query);
   return category;
 };
+
+exports.findCategoryAndPaginate = async ({}, query) => {
+  const categories = await Category.paginate({}, query);
+  return categories;
+};

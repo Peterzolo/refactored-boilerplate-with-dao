@@ -34,6 +34,10 @@ router.post(
   "/search",
   catchErrors(CategoryController.categorySearch)
 );
+router.get(
+  "/paginate",
+  catchErrors(CategoryController.fetchCategoryAndPaginate)
+);
 
 
 module.exports = router;

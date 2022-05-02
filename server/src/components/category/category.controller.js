@@ -154,15 +154,25 @@ exports.categorySearch = async (req, res) => {
     if (!searchedItem) {
       res.status(404).json({ error: "Could not find category" });
     } else {
-      res
-        .status(200)
-        .json({
-          success: true,
-          content: searchedItem,
-          message: "here is the result of your search",
-        });
+      res.status(200).json({
+        success: true,
+        content: searchedItem,
+        message: "here is the result of your search",
+      });
     }
   } catch (error) {
     res.status(500).json({ Error: error });
+  }
+};
+
+exports.fetchCategoryAndPaginate = async (req,res) => {
+  try {
+    const categories = await categoryDao.findCategoryAndPaginate(
+      {},
+      { page: req.query.page, limit: req.query.limit }
+    );
+    res.status(200).json(categories);
+  } catch (error) {
+    res.status(404).json({ Error: error });
   }
 };
