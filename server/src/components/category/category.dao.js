@@ -52,7 +52,7 @@ exports.fetchSingleCategory = async (id) => {
 exports.findCategoryByUser = async (query) => {
   const singleCategory = await Category.findOne(query);
   return singleCategory;
-};
+};  
 
 exports.editCategory = async (id, userId, CategoryObj) => {
   const category = await Category.findByIdAndUpdate(
